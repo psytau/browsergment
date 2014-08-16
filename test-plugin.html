@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <script src="jquery.min.js"></script>
+    <script src="bro-segment.js"></script>
+    <script>
+      $(function () {
+        console.log('Bro!');
+        words = [];
+        $('#par1').broSegment({wordArray: words});
+      });
+    </script>
+  </head>
+
+  <body>
+    <p id='par1'> Ladybugs lounge in <b> hamocks </b> made for them. </p>
+    <p id='par2'>毛毛蟲是一種蟲子。</p>
+  </body>
+</html>
+
