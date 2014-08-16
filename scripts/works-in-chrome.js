@@ -59,6 +59,7 @@ function replaceWordsWithSpans(node, surrounder) {
   toks = segmentNode(node);
   elms = [];
   surrounder = surrounder || function(tok) {
+    // TODO: safety check tok before putting it into a class name
     return '<span class="word-' + tok + '">' + tok + '</span>';
   }
   for(i=0; i<toks.length; i++) {
@@ -67,9 +68,23 @@ function replaceWordsWithSpans(node, surrounder) {
   $(node).replaceWith($(elms.join('')));
 }
 
+function findTokens (rootNode) {
+  var toks, tokenizeAndPush;
+  toks = [];
+  tokenizeAndPush = function(textNode) {
+    var toksPartial;
+    toksPartial = segmentNode(textNode);
+    Array.prototype.push.apply(toks, toksPartial); // append toksPartial to toks
+  };
+  eachTextNode(rootNode, tokenizeAndPush);
+  return toks;
+}
+
 $(function () {
   var p = $($('p')[0]);
 
   eachTextNode(p, replaceWordsWithSpans);
   eachTextNode($($('p')[1]), replaceWordsWithSpans);
+
+  console.dir(findTokens(p));
 });
