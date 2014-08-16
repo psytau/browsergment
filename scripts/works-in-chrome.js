@@ -62,6 +62,7 @@ function segmentNode (node) {
   // var parentNode = range.parentNode;
   // var currentOffset = 0;
   var word = nextWord(range);
+  toks.push(word);
   console.log(word)
   console.log('len of text in node: ' + len);
   // for some reason, ranges allow runover into the next node, but not the node following that.
