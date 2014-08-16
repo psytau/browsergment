@@ -1,6 +1,7 @@
 /* global $ */
 "use strict";
 
+(function($) {
   var nextWord = function nextWord (range) {
     var word = null;
     range.setStart(range.endContainer, range.endOffset);
@@ -79,6 +80,30 @@
     return toks;
   }
 
+  // TODO: figure out why it is replacing the <p> tags
+  $.fn.findAndSpanTokens = function (options) {
+    var surrounder, nodes, i;
+    if(options){
+      surrounder = options.surrounder;
+    }
+    nodes = this;
+    for(i=0; i<nodes.length; i++) {
+      replaceWordsWithSpans(nodes[i], surrounder);
+    }
+    return this;
+  };
+  $.fn.findTokens = function () {
+    var nodes, i, toks, toksPartial;
+    toks = [];
+    nodes = this;
+    for(i=0; i<nodes.length; i++) {
+      toksPartial = findTokens(nodes[i]);
+      Array.prototype.push.apply(toks, toksPartial); // append toksPartial to toks
+    }
+    return toks;
+  };
+
+}(jQuery));
   /*
   $(function () {
     var p = $($('p')[0]);

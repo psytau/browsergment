@@ -2,17 +2,13 @@
   <head>
     <meta charset='utf-8'>
     <script src="scripts/jquery.min.js"></script>
-    <script src="scripts/works-in-chrome.js"></script>
-
+    <script src="scripts/bro-segment-jquery.js"></script>
     <script>
       $(function () {
-        var p = $($('p')[0]);
-
-        eachTextNode(p, replaceWordsWithSpans);
-        eachTextNode($($('p')[1]), replaceWordsWithSpans);
-
-        console.dir(findTokens(p));
-        });
+        words = [];
+        console.dir($('p').findTokens());
+        $('p').findAndSpanTokens();
+      });
     </script>
   </head>
 
