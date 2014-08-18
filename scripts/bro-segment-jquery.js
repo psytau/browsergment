@@ -36,6 +36,11 @@
     return toks;
   }
 
+  // we don't want IFrames
+  // contents() behaves strangely on IFrames
+  var isUnwantedNode = function(node) {
+    return $(node).prop('tagName') === 'IFRAME';
+  };
 
   // apply fn to each textNode
   // traverse the tree until all textNodes are reached
@@ -44,9 +49,12 @@
       if (this.nodeType === 3) {
         fn(this);
       }
-      else {
+      else if ( ! isUnwantedNode(node) ) {
         eachTextNode(this, fn);
       }
+      // else don't decend into IFrames.
+      // $().contents() acts differently on IFrames, 
+      // In short, we dont' want it.
     });
     return node;
   }
@@ -88,7 +96,8 @@
     }
     nodes = this;
     for(i=0; i<nodes.length; i++) {
-      replaceWordsWithSpans(nodes[i], surrounder);
+      eachTextNode(nodes[i], replaceWordsWithSpans);
+      // replaceWordsWithSpans(nodes[i], surrounder);
     }
     return this;
   };
@@ -96,6 +105,7 @@
     var nodes, i, toks, toksPartial;
     toks = [];
     nodes = this;
+    console.log(this)
     for(i=0; i<nodes.length; i++) {
       toksPartial = findTokens(nodes[i]);
       Array.prototype.push.apply(toks, toksPartial); // append toksPartial to toks

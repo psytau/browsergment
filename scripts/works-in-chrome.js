@@ -40,6 +40,7 @@
   // traverse the tree until all textNodes are reached
   var eachTextNode = function eachTextNode (node, fn) {
     $(node).contents().each(function () {
+      // TODO: filter out iFrames
       if (this.nodeType === 3) {
         fn(this);
       }
