@@ -7,8 +7,10 @@
       $(function () {
         words = [];
         console.dir($('p').findTokens());
-        // $('p').findAndSpanTokens();
-        $('#par1').findAndSpanTokens();
+        $('p').findAndSpanTokens();
+        // $('#par1').findAndSpanTokens({surrounder: function(tok) {
+        //      return "<div>" + tok + "</div>";
+        //  }});
         $('#par2').findAndSpanTokens();
       });
     </script>

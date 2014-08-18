@@ -59,6 +59,11 @@
     return node;
   }
 
+  var invalidCSSRegEx = /[\s~!@$%^&\*\(\)_+\-=,\.\/';:"\?><\[\]\\{\}|`\#]/;
+  var isInvalidCSS = function (str) {
+    return invalidCSSRegEx.test(str);
+  };
+
   // node needs to be a text node (nodeType === 3)
   // uses replaceWith to replace the node wit hspans that contain classes
   // to help you find and manipulate the tokens later
@@ -67,8 +72,12 @@
     toks = segmentNode(node);
     elms = [];
     surrounder = surrounder || function(tok) {
-      // TODO: safety check tok before putting it into a class name
-      return '<span class="word-' + tok + '">' + tok + '</span>';
+      if( ! isInvalidCSS(tok) ) {
+        return '<span class="word-' + tok + '">' + tok + '</span>';
+      }
+      else {
+        return '<span>' + tok + '</span>';
+      }
     }
     for(i=0; i<toks.length; i++) {
       elms.push(surrounder(toks[i]));
@@ -90,14 +99,19 @@
 
   // TODO: figure out why it is replacing the <p> tags
   $.fn.findAndSpanTokens = function (options) {
-    var surrounder, nodes, i;
+    var surrounder, nodes, i, fn;
     if(options){
       surrounder = options.surrounder;
+      fn = function(rootNode) {
+        return replaceWordsWithSpans(rootNode, surrounder);
+      }
+    }
+    else {
+      fn = replaceWordsWithSpans;
     }
     nodes = this;
     for(i=0; i<nodes.length; i++) {
-      eachTextNode(nodes[i], replaceWordsWithSpans);
-      // replaceWordsWithSpans(nodes[i], surrounder);
+      eachTextNode(nodes[i], fn);
     }
     return this;
   };
@@ -105,7 +119,6 @@
     var nodes, i, toks, toksPartial;
     toks = [];
     nodes = this;
-    console.log(this)
     for(i=0; i<nodes.length; i++) {
       toksPartial = findTokens(nodes[i]);
       Array.prototype.push.apply(toks, toksPartial); // append toksPartial to toks
