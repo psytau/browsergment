@@ -1,19 +1,16 @@
 /*global $, describe, it, expect*/
 'use strict';
 
-describe('A suite', function() {
-  it('contains spec with an expectation', function() {
-    expect(true).toBe(true);
-  });
-});
 
 var addTextHelper = function (content) {
   $('<div id="test-div"></div>').appendTo('body')
    .append(content);
 };
+
 var removeTextHelper = function () {
   $('#test-div').remove();
 };
+
 
 describe('Segmenting Simple Sentences', function() {
 
