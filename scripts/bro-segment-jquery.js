@@ -63,6 +63,15 @@
   var isInvalidCSS = function (str) {
     return invalidCSSRegEx.test(str);
   };
+  // to do escape html special chars
+  var defaultSurrounder = function (tok) {
+      if( ! isInvalidCSS(tok) ) {
+        return '<span class="word-' + tok + '">' + tok + '</span>';
+      }
+      else {
+        return '<span>' + tok + '</span>';
+      }
+  };
 
   // node needs to be a text node (nodeType === 3)
   // uses replaceWith to replace the node wit hspans that contain classes
@@ -71,14 +80,7 @@
     var toks, i, elms;
     toks = segmentNode(node);
     elms = [];
-    surrounder = surrounder || function(tok) {
-      if( ! isInvalidCSS(tok) ) {
-        return '<span class="word-' + tok + '">' + tok + '</span>';
-      }
-      else {
-        return '<span>' + tok + '</span>';
-      }
-    }
+    surrounder = surrounder || defaultSurrounder;
     for(i=0; i<toks.length; i++) {
       elms.push(surrounder(toks[i]));
     }
