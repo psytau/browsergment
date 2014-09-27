@@ -1,0 +1,11 @@
+{
+  "name": "bro-segment",
+  "description": "An in browser word segmenter for Chrome",
+  "author": "Robert McCreary <rmccreary8@gmail.com>",
+  "dependencies": {},
+  "devDependencies": {
+    "karma-chrome-launcher": "^0.1.4",
+    "karma-jasmine": "^0.1.5"
+  },
+  "engine": "node >= 0.4.1"
+}
