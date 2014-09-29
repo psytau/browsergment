@@ -63,7 +63,7 @@
   var isInvalidCSS = function (str) {
     return invalidCSSRegEx.test(str);
   };
-  // to do escape html special chars
+  // TODO: escape html special chars
   var defaultSurrounder = function (tok) {
       if( ! isInvalidCSS(tok) ) {
         return '<span class="word-' + tok + '">' + tok + '</span>';
@@ -99,7 +99,6 @@
     return toks;
   }
 
-  // TODO: figure out why it is replacing the <p> tags
   $.fn.findAndSpanTokens = function (options) {
     var surrounder, nodes, i, fn;
     if(options){
