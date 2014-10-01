@@ -9,14 +9,15 @@ It's particularly useful for languages like chinese that aren't easily parsed in
 
 This is a jQuery plugin.
 
-To tokenize all <p> tags on a page use...
+To tokenize text in all 'p' tags on a page use...
 
     var tokens = $('p').findTokens();
+    console.log(tokens);
 
 To surround each token in a span so you can access them later...
 
     $('p').findAndSpanTokens();
-    $('.word-watermellon').text() === 'watermellon';
+    // $('.word-watermellon').text() === 'watermellon';
 
 Example here: http://codepen.io/psytau/pen/sjJKl
 
