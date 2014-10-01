@@ -5,6 +5,21 @@ It's particularly useful for languages like chinese that aren't easily parsed in
 
 中文分词模块
 
+## Usage
+
+This is a jQuery plugin.
+
+To tokenize all <p> tags on a page use...
+
+    var tokens = $('p').findTokens();
+
+To surround each token in a span so you can access them later...
+
+    $('p').findAndSpanTokens();
+    $('.word-watermellon').text() === 'watermellon';
+
+Example here: http://codepen.io/psytau/pen/sjJKl
+
 ### Dev Setup
 
 clone then...
@@ -14,4 +29,3 @@ clone then...
 
 to install karma and run tests
 
-Example here: http://codepen.io/psytau/pen/sjJKl
