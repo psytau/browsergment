@@ -1,4 +1,4 @@
-/* global $ */
+/* global $, jQuery */
 "use strict";
 
 (function($) {
@@ -29,12 +29,14 @@
     range.setEnd(node, initialPosition);
     var word = nextWord(range);
     toks.push(word);
-    while(word && range.endOffset < len-1){
+    // for some reason, the ' ' in the front of some will bleed into the word
+    // could hack it by trimming the word before adding it as a css name
+    while(word && range.endOffset < len){
       word = nextWord(range);
       toks.push(word);
     }
     return toks;
-  }
+  };
 
   // we don't want IFrames
   // contents() behaves strangely on IFrames
@@ -63,18 +65,20 @@
   var isInvalidCSS = function (str) {
     return invalidCSSRegEx.test(str);
   };
-  // TODO: escape html special chars
+
   var defaultSurrounder = function (tok) {
-      if( ! isInvalidCSS(tok) ) {
-        return '<span class="word-' + tok + '">' + tok + '</span>';
-      }
-      else {
-        return '<span>' + tok + '</span>';
-      }
+    var trimmedToken = $.trim(tok); // range.expand('word') includes the next word with
+                                    // the current whitespace under some circumstances.
+    if( ! isInvalidCSS(trimmedToken) ) {
+      return '<span class="word-' + trimmedToken + '">' + tok + '</span>';
+    }
+    else {
+      return '<span>' + tok + '</span>';
+    }
   };
 
   // node needs to be a text node (nodeType === 3)
-  // uses replaceWith to replace the node wit hspans that contain classes
+  // uses replaceWith to replace the node with spans that contain classes
   // to help you find and manipulate the tokens later
   var replaceWordsWithSpans = function replaceWordsWithSpans(node, surrounder) {
     var toks, i, elms;
@@ -127,14 +131,18 @@
     return toks;
   };
 
+  // for unit tests
+  $._test = {};
+  $._test.nextWord = nextWord;
+
 }(jQuery));
-  /*
+  /* Example:
+
   $(function () {
-    var p = $($('p')[0]);
-
-    eachTextNode(p, replaceWordsWithSpans);
-    eachTextNode($($('p')[1]), replaceWordsWithSpans);
-
-    console.dir(findTokens(p));
+    // get an array of words
+    console.dir($('p').findTokens());
+    // tag each word with a span
+    $('p').findAndSpanTokens();
   });
+
   */
