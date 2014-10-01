@@ -10,3 +10,5 @@ clone then...
     karma run tests/karma.conf.js
 
 to install karma and run tests
+
+Example here: http://codepen.io/psytau/pen/sjJKl
