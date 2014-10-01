@@ -1,6 +1,9 @@
 ##BROWSER GMENTATION
 
 This is a simple project that attempts to expose Chrome's natural language segmentation to JavaScript.
+It's particularly useful for languages like chinese that aren't easily parsed in to 'words'.
+
+中文分词模块
 
 ### Dev Setup
 
