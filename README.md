@@ -17,7 +17,7 @@ To tokenize text in all 'p' tags on a page use...
 To surround each token in a span so you can access them later...
 
     $('p').findAndSpanTokens();
-    // $('.word-watermellon').text() === 'watermellon';
+    // $('.word-watermelon').text() === 'watermelon';
 
 Example here: http://codepen.io/psytau/pen/sjJKl
 
