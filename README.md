@@ -1,6 +1,6 @@
-##BROswer SEGMENTATION
+##BROWSER GMENTATION
 
-This is a simple project that attemts to expose Chrome's Natrual Language Segmentation to JavaScript.
+This is a simple project that attempts to expose Chrome's natural language segmentation to JavaScript.
 
 ### Dev Setup
 

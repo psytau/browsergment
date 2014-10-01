@@ -1,5 +1,5 @@
 {
-  "name": "bro-segment",
+  "name": "browsergment",
   "description": "An in browser word segmenter for Chrome",
   "author": "Robert McCreary <rmccreary8@gmail.com>",
   "dependencies": {},
