@@ -19,7 +19,7 @@
   }
 
   // segment the node, stop, and return tokens
-  var segmentNode = function segmentNode (node) {
+  var segmentNodeUsingRangeExpand = function segmentNodeUsingRangeExpand(node) {
     var toks, range, initialPosition, len;
     toks = [];
     range = document.createRange();
@@ -80,23 +80,23 @@
   // node needs to be a text node (nodeType === 3)
   // uses replaceWith to replace the node with spans that contain classes
   // to help you find and manipulate the tokens later
-  var replaceWordsWithSpans = function replaceWordsWithSpans(node, surrounder) {
+  var replaceWordsWithSpans = function replaceWordsWithSpans(node, surrounder, segmenter, toReplace) {
     var toks, i, elms;
-    toks = segmentNode(node);
+    toks = segmenter(node);
     elms = [];
-    surrounder = surrounder || defaultSurrounder;
+    // surrounder = surrounder || defaultSurrounder;
     for(i=0; i<toks.length; i++) {
       elms.push(surrounder(toks[i]));
     }
-    $(node).replaceWith($(elms.join('')));
-  }
+    toReplace.push({node: node, replacement: elms.join('')});
+  };
 
   var findTokens = function findTokens (rootNode) {
     var toks, tokenizeAndPush;
     toks = [];
     tokenizeAndPush = function(textNode) {
       var toksPartial;
-      toksPartial = segmentNode(textNode);
+      toksPartial = segmentNodeUsingRangeExpand(textNode);
       Array.prototype.push.apply(toks, toksPartial); // append toksPartial to toks
     };
     eachTextNode(rootNode, tokenizeAndPush);
@@ -104,12 +104,15 @@
   }
 
   $.fn.findAndSpanTokens = function (options) {
-    var surrounder, nodes, i, fn;
+    var surrounder, segmenter, nodes, i, fn, toReplace;
+    toReplace = [];
+    options = options || {};
     if(options){
-      surrounder = options.surrounder;
+      surrounder = options.surrounder || defaultSurrounder;
+      segmenter = options.segmenter || segmentNodeUsingRangeExpand;
       fn = function(rootNode) {
-        return replaceWordsWithSpans(rootNode, surrounder);
-      }
+        return replaceWordsWithSpans(rootNode, surrounder, segmenter, toReplace);
+      };
     }
     else {
       fn = replaceWordsWithSpans;
@@ -117,6 +120,9 @@
     nodes = this;
     for(i=0; i<nodes.length; i++) {
       eachTextNode(nodes[i], fn);
+    }
+    for(i=0; i< toReplace.length; i++) {
+      $(toReplace[i].node).replaceWith($(toReplace[i].replacement));
     }
     return this;
   };

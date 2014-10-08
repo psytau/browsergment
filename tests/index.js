@@ -167,3 +167,31 @@ describe('Tagging Simple Sentences', function() {
   });
 
 });
+
+describe('Using a custom segmenter', function() {
+
+  iit('it can use a supplied segmentation function', function() {
+    // Note that this segmenter will trim out all whitespace, should it
+    // would not be a good idea to use it other than for tests.
+    var segmenter = function(textNode) {
+      return $(textNode).text().split(/\W/);
+    };
+    var text, testDiv;
+    text = '<p id="test_custom_seg">Ladybugs in <b> red are <i> lounging in </i> hamocks made </b> for them.</p>';
+    testDiv = helpers.addText(text);
+
+    $('#test_custom_seg').findAndSpanTokens({segmenter: segmenter});
+
+    expect(testDiv.find('.word-Ladybugs').text()).toBe('Ladybugs');
+    expect(testDiv.find('.word-in').length).toBe(2);
+    expect(testDiv.find('.word-red').text().trim()).toBe('red'); // trim initial whitespace
+    expect(testDiv.find('.word-are').text()).toBe('are');
+    expect(testDiv.find('.word-lounging').text().trim()).toBe('lounging');
+    expect(testDiv.find('.word-hamocks').text().trim()).toBe('hamocks');
+    expect(testDiv.find('.word-made').text()).toBe('made');
+    expect(testDiv.find('.word-for').text().trim()).toBe('for');  // trim initial whitespace
+    expect(testDiv.find('.word-them').text()).toBe('them');
+
+    // testDiv.remove();
+  });
+});
